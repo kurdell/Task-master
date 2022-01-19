@@ -6,37 +6,41 @@
 
 {% block main%}
 
-<h1 class="display-1"> Hello {{user}}!</h1>
 
-<div class=""></div>
-<div class="row align-items-center mt-5 mb-5">
-    <div class="col">
-        <div class="card" style="width: 18rem;">
-            <img src="/static/check_list.svg" class="card-img-top" alt="Check list picture">
-            <div class="card-body">
-              <h5 class="card-title">Plan your day.</h5>
-              <p class="card-text">Create daily tasks and save them to your list here.</p>
-              <a href="/task" class="btn btn-primary">Add Task</a>
+
+<div class="container-fluid shadow p-5 mb-5 bg-body rounded">
+
+    <h1 class="display-1"> Hello {{user}}!</h1>
+
+    <div class="row align-items-center ">
+        <div class="col mt-5 d-flex justify-content-center">
+            <div class="card" style="width: 18rem;">
+                <img src="/static/check_list.svg" class="card-img-top" alt="Check list picture">
+                <div class="card-body">
+                <h5 class="card-title">Plan your day.</h5>
+                <p class="card-text">Create daily tasks and save them to your list here.</p>
+                <a href="/task" class="btn btn-primary">Add Task</a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col mt-5">
-        <div class="card " style="width: 18rem;">
-            <img src="/static/completed_tasks.svg" class="card-img-top" alt="Keep track of tasks">
-            <div class="card-body">
-              <h5 class="card-title">Keep track of tasks.</h5>
-              <p class="card-text">As soon as you complete your task it's time to cross them off the list, we will keep track of completed tasks for you.</p>
-              <a href="/task" class="btn btn-primary">Completed</a>
+        <div class="col mt-5 d-flex justify-content-center">
+            <div class="card" style="width: 18rem;">
+                <img src="/static/completed_tasks.svg" class="card-img-top" alt="Keep track of tasks">
+                <div class="card-body">
+                <h5 class="card-title">Keep track of tasks.</h5>
+                <p class="card-text">As soon as you complete your task it's time to cross them off the list, we will keep track of completed tasks for you.</p>
+                <a href="/completed" class="btn btn-primary">Completed</a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col mt-5">
-        <div class="card " style="width: 18rem;">
-            <img src="/static/thoughts_ideas.svg" class="card-img-top" alt="Thoughts picture">
-            <div class="card-body">
-              <h5 class="card-title">Thoughts/Ideas</h5>
-              <p class="card-text">Got any thoughts or ideas you would like to write down for the future? tell us and we will remember it for you!</p>
-              <a href="/task" class="btn btn-primary">Notes</a>
+        <div class="col mt-5 d-flex justify-content-center">
+            <div class="card" style="width: 18rem;">
+                <img src="/static/thoughts_ideas.svg" class="card-img-top" alt="Thoughts picture">
+                <div class="card-body">
+                <h5 class="card-title">Thoughts/Ideas</h5>
+                <p class="card-text">Got any thoughts or ideas you would like to write down for the future? tell us and we will remember it for you!</p>
+                <a href="/notes" class="btn btn-primary">Notes</a>
+                </div>
             </div>
         </div>
     </div>

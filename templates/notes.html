@@ -6,8 +6,36 @@
 
 {% block main%}
 
-<input type="text" placeholder="Enter goal">
-<button type="submit">Add</button>
+<div class="container-md text-primary mt-5">
+    <div class="card">
+        <div class="card-header text-center">
+            <h3>Notes</h3>
+        </div>
+        
+        <div class="card-body">
+          <div class="container shadow p-5 mb-5 bg-body rounded">
+                {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    {% for msg in messages %}
+                      <p class="text-center">{{ msg }}</p>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}                
+                <form action="/notes" method="post">
+                  <div class="form-group">
+                    <label for="Notes"> Enter Notes</label>
+                    <textarea name="notes" class="form-control" rows="3"></textarea>
+                  </div>
+                  <div class="row justify-content-center mt-3">
+                    <div class="col-md-1 pb-4">  
+                      <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                  </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
 

@@ -27,7 +27,7 @@ class Users(db.Model):
 class Tasks(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     task = db.Column(db.String)
-    goals = db.Column(db.String)
+    notes = db.Column(db.String)
  
     # Create string
     def __repr__(self):
@@ -183,15 +183,16 @@ def register():
 
 @app.route("/task", methods=["GET", "POST"])
 @login_required
-def task():
+def task(): 
     if request.method == "GET":
         return render_template("task.html")
-    
+
     if request.method == "POST":
         task_entered = request.form.get("task")
+        check_user = Users.query.filter_by(name = session['user']).first()
 
         # Add task to database
-        usr_task = Tasks(task=task_entered)
+        usr_task = Tasks(task=task_entered, user_id=check_user.id)
         db.session.add(usr_task)
         db.session.commit()
         return redirect(url_for('index'))
@@ -199,10 +200,12 @@ def task():
 
 @app.route("/notes", methods=["GET", "POST"])
 @login_required
-def goals():
-    if request.method == "GET":
-        return render_template("goals.html")
-
+def notes():
+    if request.method == "POST":
+        notes = request.form.get("notes")
+  
+    return render_template("notes.html")
+        
 
 if __name__ == "__main__":
     app.run(debug=False)

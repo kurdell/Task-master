@@ -13,35 +13,26 @@
         </div>
         
         <div class="card-body">
-            <div class="container shadow p-5 mb-5 bg-body rounded ">
-              
+          <div class="container shadow p-5 mb-5 bg-body rounded">
                 {% with messages = get_flashed_messages() %}
                   {% if messages %}
                     {% for msg in messages %}
                       <p class="text-center">{{ msg }}</p>
                     {% endfor %}
                   {% endif %}
-                {% endwith %}
-                
-                <form>
+                {% endwith %}                
+                <form action="/task" method="post">
                   <div class="form-group">
-                    <label for="Task">Enter task</label>
+                    <label for="Task">Subject</label>
                     <input name="task" type="text" class="form-control">
-                  </div>
-                  <div class="form-group mt-3">
-                    <label for="Priority"> Select Priority</label>
-                    <select class="form-control" id="Priority">
-                      <option>Low</option>
-                      <option>Normal</option>
-                      <option>Urgent</option>
-                    </select>
                   </div>
                   <div class="row justify-content-center mt-3">
                     <div class="col-md-1 pb-4">  
                       <button type="submit" class="btn btn-primary">Add</button>
                     </div>
+                  </div>
                 </form>
-              </div>
+            </div>
         </div>
     </div>
 </div>
