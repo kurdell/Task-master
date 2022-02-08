@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from flask import Flask, redirect, render_template, request, session, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -24,14 +25,24 @@ class Users(db.Model):
     def __repr__(self):
         return '<Name %r>' % self.name
 
+# Create Task table
 class Tasks(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     task = db.Column(db.String)
-    notes = db.Column(db.String)
  
     # Create string
     def __repr__(self):
         return '<Tasks %r>' % self.task
+
+# Create Notes table
+class Notes(db.Model):
+    user_id = db.Column(db.Integer, primary_key=True)
+    note_id = db.Column(db.Integer, nullable=False)
+    notes = db.Column(db.String)
+ 
+    # Create string
+    def __repr__(self):
+        return '<Notes %r>' % self.notes
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -53,14 +64,37 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-@app.route('/')
+
+# --------------------Routes/Views-------------------------
+
+
+@app.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
 
-    # Show tasks
-    task_list = Tasks.query.all()
+    # Query database task info to display it
     user = session['user']
+    check_user = Users.query.filter_by(name = session['user']).first()
+    task_list = Tasks.query.with_entities(Tasks.task).filter_by(user_id = check_user.id)
+     
     return render_template("index.html", task_list = task_list, user = user)
+
+
+@app.route("/delete_task/<task>")
+@login_required
+def delete_task(task):
+    
+    delete = Tasks.query.filter_by(task = task).delete()
+    db.session.commit()
+    return redirect(url_for('index'))
+
+@app.route("/delete_note/<note>")
+@login_required
+def delete_note(note):
+    
+    delete = Notes.query.filter_by(notes = note).delete()
+    db.session.commit()
+    return redirect(url_for('notes'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -100,15 +134,12 @@ def login():
             
     return render_template("login.html")
 
-        
-
-  
-        
+              
 @app.route("/logout")
 def logout():
     # Clear session and display info to user
     if 'user' in session:
-        user = session['user']
+        user = session['user'].title()
         flash(f'You have been logged out, {user}', 'info')
     session.pop('user', None)
 
@@ -179,8 +210,11 @@ def register():
         user = Users(name=usr_name , password=hash)
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('index'))
 
+        #Log user in to database
+        session['user'] = usr_name
+        return redirect(url_for('index'))
+        
 @app.route("/task", methods=["GET", "POST"])
 @login_required
 def task(): 
@@ -188,11 +222,12 @@ def task():
         return render_template("task.html")
 
     if request.method == "POST":
-        task_entered = request.form.get("task")
+        task_entered = request.form.get("task").strip()
         check_user = Users.query.filter_by(name = session['user']).first()
 
-        # Add task to database
+        # Add task to database for logged in user and redirect to homepage
         usr_task = Tasks(task=task_entered, user_id=check_user.id)
+
         db.session.add(usr_task)
         db.session.commit()
         return redirect(url_for('index'))
@@ -201,11 +236,30 @@ def task():
 @app.route("/notes", methods=["GET", "POST"])
 @login_required
 def notes():
+
+    if request.method == "GET":
+        # Query database for user/notes info
+        check_user = Users.query.filter_by(name = session['user']).first()
+        notes_list = Notes.query.with_entities(Notes.notes).filter_by(note_id = check_user.id)
+
+        return render_template('notes.html' , notes_list = notes_list)
+
     if request.method == "POST":
-        notes = request.form.get("notes")
-  
-    return render_template("notes.html")
+         # Query database for user/notes info
+        notes = request.form.get("notes").strip()
+        check_user = Users.query.filter_by(name = session['user']).first()
+        notes_list = Notes.query.with_entities(Notes.notes).filter_by(note_id = check_user.id)
+
+        # Add notes to database for logged in user and redirect to homepage
+        usr_notes = Notes(notes=notes, note_id=check_user.id)
+
+        db.session.add(usr_notes)
+        db.session.commit()
+        return redirect(url_for('notes'))
+        
+    
         
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    db.create_all()
+    app.run(debug=True)

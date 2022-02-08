@@ -1,5 +1,69 @@
 body{
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 200 200'%3E%3Cpolygon fill='%23DCEFFA' points='100 0 0 100 100 100 100 200 200 100 200 0'/%3E%3C/svg%3E");
+    background-image: url('/static/Background.png');
+    background-position: center;
+    background-size: cover;
+}
+
+/*HOMEPAGE HERO*/
+
+.Lato-font{
+    font-family: 'Lato', sans-serif;
+}
+
+.Poppins-font{
+    font-family: 'Poppins', sans-serif;
+}
+
+.Poppins-font-small{
+    font-family: 'Poppins', sans-serif;
+}
+
+.header-div{
+    background-color: #DCEFFA;
+}
+.img-size{
+    width: 100%;
+    height: 700px;
+}
+
+.hero{
+    position: relative;
+}
+
+.hero-content{
+    position: absolute;
+    width: 100%;
+    left: 54%;
+    right: 0%;
+    bottom: 12%;
+    font-weight: bold;
+    font-size: 5vw;
+}
+
+.hero-subtitle{
+    font-size:3vw;
+}
+
+
+
+/*TASK LIST SECTION*/
+
+.align-right{
+    width: 100%;
+    margin: 0 auto;
+    text-align: right;
+}
+
+
+
+/*COMPLETED TASK BUTTON*/
+
+.completed a{
+    text-decoration: none;
+}
+
+.completed img {
+    height: 40px;
 }
 
 /*LOGIN FORM*/
